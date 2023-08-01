@@ -8,5 +8,5 @@ export default function useStepper() {
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1)
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1)
 
-  return { activeStep, isLastStep, isFirstStep, handleNext, handlePrev, setIsLastStep, setIsFirstStep }
+  return { activeStep, isLastStep, isFirstStep, handleNext, handlePrev, setActiveStep, setIsLastStep, setIsFirstStep }
 }

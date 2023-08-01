@@ -34,7 +34,7 @@ const Stepper = forwardRef<
           />
         )
         return cloneElement(child, {
-          className: cn("flex h-8 w-8 items-center justify-center rounded-full bg-neutral text-neutral-foreground",
+          className: cn("flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-neutral text-neutral-foreground",
             index === activeStep && "border border-success bg-success-foreground text-success",
             index < activeStep && "bg-success text-background",
           ),
