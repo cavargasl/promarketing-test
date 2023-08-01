@@ -11,7 +11,7 @@
     --success-foreground: 84 81% 92%;
 
     --neutral: 0 0% 91%;
-    --neutral--foreground: 0 0% 56%;
+    --neutral-foreground: 0 0% 56%;
   }
 
   .dark {}
