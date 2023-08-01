@@ -20,23 +20,19 @@ const Stepper = forwardRef<
   return (
     <section
       ref={ref}
-      className={cn("relative flex w-full items-center justify-between", className)}
+      className={cn("relative flex w-full items-center justify-between gap-1", className)}
       {...props}
     >
-      {props.children?.map((child, index) => {
-        const hasChildrenProp = 'children' in child.props;
-        if (!hasChildrenProp) return (
-          <div
-            className={cn("h-4 w-4 cursor-pointer rounded-full bg-neutral",
-              index === activeStep && "bg-success-foreground",
-              index < activeStep && "bg-success"
-            )}
-          />
-        )
+      {props.children.map((child, index) => {
+        const className = (child.props as { className?: string }).className
+        const activeClassName = (child.props as { activeClassName?: string }).activeClassName
+        const completedClassName = (child.props as { completedClassName?: string }).completedClassName
+
         return cloneElement(child, {
-          className: cn("flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-neutral text-neutral-foreground",
-            index === activeStep && "border border-success bg-success-foreground text-success",
-            index < activeStep && "bg-success text-background",
+          className: cn(
+            className,
+            index === activeStep && `${activeClassName ? activeClassName : "border border-success bg-success-foreground text-success"}`,
+            index < activeStep && `${completedClassName ? completedClassName : "bg-success text-background"}`,
           ),
           key: index
         })
@@ -48,12 +44,14 @@ Stepper.displayName = "Stepper"
 
 const Step = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  React.HTMLAttributes<HTMLDivElement> & { activeClassName?: string, completedClassName?: string }
 >(({ className, ...props }, ref) => {
+  if (props.children === undefined) return <div className={cn("h-4 w-4 cursor-pointer rounded-full bg-neutral", className)} />
+
   return (
     <div
       ref={ref}
-      className={cn("flex items-center justify-center", className)}
+      className={cn("flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-neutral text-neutral-foreground", className)}
       {...props}
     />
   )
