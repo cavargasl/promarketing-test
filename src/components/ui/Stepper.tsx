@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { cloneElement, forwardRef, useEffect, type ReactElement } from "react"
+import React, { cloneElement, forwardRef, useEffect, type ReactElement } from "react"
 
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactElement[]
@@ -23,15 +23,24 @@ const Stepper = forwardRef<
       className={cn("relative flex w-full items-center justify-between", className)}
       {...props}
     >
-      {props.children?.map((child, index) => (
-        cloneElement(child, {
+      {props.children?.map((child, index) => {
+        const hasChildrenProp = 'children' in child.props;
+        if (!hasChildrenProp) return (
+          <div
+            className={cn("h-4 w-4 cursor-pointer rounded-full bg-neutral",
+              index === activeStep && "bg-success-foreground",
+              index < activeStep && "bg-success"
+            )}
+          />
+        )
+        return cloneElement(child, {
           className: cn("flex h-8 w-8 items-center justify-center rounded-full bg-neutral text-neutral-foreground",
             index === activeStep && "border border-success bg-success-foreground text-success",
             index < activeStep && "bg-success text-background",
           ),
           key: index
         })
-      ))}
+      })}
     </section>
   )
 })
