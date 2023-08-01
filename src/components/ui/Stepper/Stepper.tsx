@@ -12,9 +12,7 @@ const Stepper = forwardRef<
   HTMLDivElement,
   StepperProps
 >(({ className, isLastStep, isFirstStep, activeStep, ...props }, ref) => {
-  const {
-    children,
-  } = props
+  const { children } = props
 
   const childrenArray = React.Children.toArray(children).filter(Boolean)
   const steps = childrenArray.map((step, index) => {
@@ -53,7 +51,7 @@ interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
   activeClassName?: string
   completedClassName?: string
   StepIconComponent?: React.ReactNode
-  children?: React.ReactElement
+  children?: React.ReactElement<StepContentProps>
 }
 const Step = forwardRef<
   HTMLDivElement,
@@ -95,5 +93,33 @@ const Step = forwardRef<
 })
 Step.displayName = "Step"
 
-export { Step, Stepper }
+
+interface StepContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  index?: number
+  activeClassName?: string
+  completedClassName?: string
+}
+const StepContent = forwardRef<
+  HTMLDivElement,
+  StepContentProps
+>(({ className, index, activeClassName, completedClassName, ...props }, ref) => {
+  const { activeStep } = useContext(StepperContext)
+  if (index === undefined) return null
+  return (
+    <div
+      ref={ref}
+      className={cn("absolute left-[50%] top-[calc(100%+1rem)] flex w-max -translate-x-2/4 flex-col items-center justify-center gap-1 text-neutral-foreground", className,
+        index === activeStep && `${activeClassName ? activeClassName : "text-success"}`,
+        (index < activeStep) && `${completedClassName ? completedClassName : "text-success"}`
+      )}
+      {...props}
+    >
+      {props.children}
+    </div>
+  )
+})
+StepContent.displayName = "StepContent"
+
+
+export { Step, StepContent, Stepper }
 
