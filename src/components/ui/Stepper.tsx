@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils"
-import { forwardRef, useEffect } from "react"
+import { cloneElement, forwardRef, useEffect, type ReactElement } from "react"
 
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode[]
+  children: ReactElement[]
   activeStep: number
   isLastStep: (value: boolean) => void
   isFirstStep: (value: boolean) => void
@@ -24,21 +24,32 @@ const Stepper = forwardRef<
       {...props}
     >
       {props.children?.map((child, index) => (
-        <div key={index} className="flex items-center">
-          <div
-            className={cn("flex h-8 w-8 items-center justify-center rounded-full bg-gray-200",
-              index === activeStep ? "bg-success-foreground" : "bg-gray-200"
-            )}>
-            {child}
-          </div>
-          {index !== props.children.length - 1 && (
-            <div className="h-px flex-1 bg-gray-200" />
-          )}
-        </div>
+        cloneElement(child, {
+          className: cn("flex h-8 w-8 items-center justify-center rounded-full bg-neutral text-neutral-foreground",
+            index === activeStep && "border border-success bg-success-foreground text-success",
+            index < activeStep && "bg-success text-background",
+          ),
+          key: index
+        })
       ))}
     </section>
   )
 })
 Stepper.displayName = "Stepper"
 
-export { Stepper }
+const Step = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn("flex items-center justify-center", className)}
+      {...props}
+    />
+  )
+})
+Step.displayName = "Step"
+
+export { Step, Stepper }
+
