@@ -1,5 +1,6 @@
 'use client'
 import { Icons } from '@/components/Icons'
+import { Button } from '@/components/ui/Button'
 import { Step, Stepper } from '@/components/ui/Stepper'
 import useStepper from '@/hooks/useStepper'
 
@@ -18,8 +19,14 @@ export default function StepperWithIcon() {
         <Step onClick={() => setActiveStep(3)} StepIconComponent={<Icons.user className="h-5 w-5" />} />
       </Stepper>
       <div className="flex justify-center gap-8">
-        <button onClick={handlePrev} disabled={isFirstStep}>back</button>
-        <button onClick={handleNext} disabled={isLastStep}>next</button>
+        <Button onClick={handlePrev} disabled={isFirstStep} variant={"accent"}>
+          <Icons.home className="h-5 w-5" />
+          back
+        </Button>
+        <Button onClick={handleNext} disabled={isLastStep} variant={"accent"}>
+          next
+          <Icons.home className="h-5 w-5" />
+        </Button>
       </div>
     </div>
   )
