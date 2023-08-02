@@ -34,7 +34,14 @@ const Stepper = forwardRef<
   )
 
   const dynamicWidth = useMemo(() => {
-    return activeStep === 0 ? "w-0" : activeStep === steps.length - 1 ? "w-[calc(100%-4px)]" : `w-${String(activeStep + "/" + (steps.length - 1))}`
+    function getWidth() {
+      if (activeStep === 0) return "0%"
+      if (activeStep === steps.length - 1) return "100%"
+      //const width = `w-[calc(${((activeStep / (steps.length - 1)) * 100).toFixed(2)}%)]`
+      const width = `${((activeStep / (steps.length - 1)) * 100).toFixed(2)}%`
+      return width
+    }
+    return getWidth()
   }, [activeStep, steps.length])
 
   const memoizedConnectorDefault = useMemo(() => {
@@ -49,12 +56,13 @@ const Stepper = forwardRef<
   }, [connector])
 
   const memoizedConnectorComplete = useMemo(() => {
-    if (!connector) return <StepConnector className={cn(dynamicWidth)} completedClassName={connectorClassNameCompleteDefault} />
+    if (!connector) return <StepConnector style={{width: dynamicWidth}} completedClassName={connectorClassNameCompleteDefault} />
     const connectorProps = connector.props as { completedClassName?: string }
     const hasCompletedClassName = "completedClassName" in connectorProps
     const connectorCompleteClassName = hasCompletedClassName ? connectorProps.completedClassName : ""
     return cloneElement(connector, {
-      className: cn(connectorClassNameCompleteDefault, connectorCompleteClassName, dynamicWidth),
+      className: cn(connectorClassNameCompleteDefault, connectorCompleteClassName),
+      style: {width: dynamicWidth}
     })
   }, [connector, dynamicWidth])
 
