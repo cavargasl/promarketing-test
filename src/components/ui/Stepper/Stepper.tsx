@@ -105,7 +105,7 @@ const Step = forwardRef<
   if (!StepIconComponent) return (
     <div
       onClick={() => setActiveStep(index)}
-      className={cn("relative h-4 w-4 cursor-pointer rounded-full bg-neutral",
+      className={cn("relative h-4 w-4 cursor-pointer rounded-full bg-neutral transition-colors duration-500",
         className,
         index === activeStep && `${activeClassName ? activeClassName : "border border-success bg-success-foreground text-success"}`,
         (index < activeStep) && `${completedClassName ? completedClassName : "bg-success text-background"}`)}
