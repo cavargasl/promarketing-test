@@ -14,9 +14,9 @@ export default function StepperCustomClass() {
         isLastStep={(value) => setIsLastStep(value)}
         isFirstStep={(value) => setIsFirstStep(value)}
         connector={<StepConnector className='h-3 bg-red-500' completedClassName='h-3 bg-yellow-500' />}
+        setActiveStep={setActiveStep}
       >
         <Step
-          onClick={() => setActiveStep(1)}
           StepIconComponent={1}
           activeClassName='bg-yellow-500 text-white'
           completedClassName='bg-blue-500 text-white'
@@ -31,7 +31,6 @@ export default function StepperCustomClass() {
           </StepContent>
         </Step>
         <Step
-          onClick={() => setActiveStep(2)}
           StepIconComponent={<Icons.home className="h-14 w-14" />}
           activeClassName='bg-yellow-500 text-white'
           completedClassName='bg-blue-500 text-white'
@@ -47,7 +46,6 @@ export default function StepperCustomClass() {
           </StepContent>
         </Step>
         <Step
-          onClick={() => setActiveStep(3)}
           StepIconComponent={<Icons.user className="h-5 w-5" />}
           activeClassName='bg-yellow-500 text-white'
           completedClassName='bg-blue-500 text-white'

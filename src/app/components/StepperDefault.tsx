@@ -12,10 +12,12 @@ export default function StepperDefault() {
         activeStep={activeStep}
         isLastStep={(value) => setIsLastStep(value)}
         isFirstStep={(value) => setIsFirstStep(value)}
+        setActiveStep={setActiveStep}
       >
-        <Step onClick={() => setActiveStep(1)} />
-        <Step onClick={() => setActiveStep(2)} />
-        <Step onClick={() => setActiveStep(3)} />
+        <Step />
+        <Step />
+        <Step />
+        <Step />
       </Stepper>
       <div className="flex justify-center gap-8">
         <Button onClick={handlePrev} disabled={isFirstStep}>back</Button>

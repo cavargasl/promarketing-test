@@ -9,11 +9,12 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   isLastStep: (value: boolean) => void
   isFirstStep: (value: boolean) => void
   connector?: ReactElement
+  setActiveStep: (value: number) => void
 }
 const Stepper = forwardRef<
   HTMLDivElement,
   StepperProps
->(({ className, isLastStep, isFirstStep, activeStep, connector, ...props }, ref) => {
+>(({ className, isLastStep, isFirstStep, activeStep, connector, setActiveStep, ...props }, ref) => {
   const { children } = props
 
   const childrenArray = React.Children.toArray(children).filter(Boolean)
@@ -29,15 +30,14 @@ const Stepper = forwardRef<
   }, [activeStep, isLastStep, isFirstStep, props.children.length])
 
   const contextValue = useMemo(
-    () => ({ activeStep }),
-    [activeStep]
+    () => ({ activeStep, setActiveStep }),
+    [activeStep, setActiveStep]
   )
 
   const dynamicWidth = useMemo(() => {
     function getWidth() {
       if (activeStep === 0) return "0%"
       if (activeStep === steps.length - 1) return "100%"
-      //const width = `w-[calc(${((activeStep / (steps.length - 1)) * 100).toFixed(2)}%)]`
       const width = `${((activeStep / (steps.length - 1)) * 100).toFixed(2)}%`
       return width
     }
@@ -95,7 +95,7 @@ const Step = forwardRef<
   StepProps
 >(({ className, StepIconComponent, index, activeClassName, completedClassName, ...props }, ref) => {
   const { children } = props
-  const { activeStep } = useContext(StepperContext)
+  const { activeStep, setActiveStep } = useContext(StepperContext)
   if (index === undefined) return null
 
   const stepContent = children && cloneElement(children, {
@@ -104,6 +104,7 @@ const Step = forwardRef<
 
   if (!StepIconComponent) return (
     <div
+      onClick={() => setActiveStep(index)}
       className={cn("relative h-4 w-4 cursor-pointer rounded-full bg-neutral",
         className,
         index === activeStep && `${activeClassName ? activeClassName : "border border-success bg-success-foreground text-success"}`,
@@ -116,6 +117,7 @@ const Step = forwardRef<
   return (
     <div className="relative">
       <div
+        onClick={() => setActiveStep(index)}
         ref={ref}
         className={cn("flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-neutral text-neutral-foreground", className,
           index === activeStep && `${activeClassName ? activeClassName : "border border-success bg-success-foreground text-success"}`,

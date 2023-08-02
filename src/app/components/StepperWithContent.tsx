@@ -14,17 +14,18 @@ export default function StepperWithContent() {
         isLastStep={(value) => setIsLastStep(value)}
         isFirstStep={(value) => setIsFirstStep(value)}
         connector={<StepConnector className='bg-red-500' completedClassName='bg-gradient-to-r from-yellow-500 to-blue-500'/>}
+        setActiveStep={setActiveStep}
       >
-        <Step onClick={() => setActiveStep(1)} StepIconComponent={1} >
+        <Step StepIconComponent={1} >
           <StepContent>Step 1</StepContent>
         </Step>
-        <Step onClick={() => setActiveStep(2)}>
+        <Step>
           <StepContent>
             <p>Step 2</p>
             <p>more info</p>
           </StepContent>
         </Step>
-        <Step onClick={() => setActiveStep(3)} StepIconComponent={<Icons.user className="h-5 w-5" />}>
+        <Step StepIconComponent={<Icons.user className="h-5 w-5" />}>
           <StepContent>
             <p>Step 3</p>
           </StepContent>

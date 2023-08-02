@@ -14,10 +14,11 @@ export default function StepperWithIcon() {
         isLastStep={(value) => setIsLastStep(value)}
         isFirstStep={(value) => setIsFirstStep(value)}
         connector={<StepConnector completedClassName='bg-yellow-500' />}
+        setActiveStep={setActiveStep}
       >
-        <Step onClick={() => setActiveStep(1)} StepIconComponent={1} />
-        <Step onClick={() => setActiveStep(2)} StepIconComponent={<Icons.home className="h-5 w-5" />} />
-        <Step onClick={() => setActiveStep(3)} StepIconComponent={<Icons.user className="h-5 w-5" />} />
+        <Step StepIconComponent={1} />
+        <Step StepIconComponent={<Icons.home className="h-5 w-5" />} />
+        <Step StepIconComponent={<Icons.user className="h-5 w-5" />} />
       </Stepper>
       <div className="flex justify-center gap-8">
         <Button onClick={handlePrev} disabled={isFirstStep} variant={"accent"}>
