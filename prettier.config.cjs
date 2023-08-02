@@ -11,6 +11,8 @@ module.exports = {
     "<THIRD_PARTY_MODULES>",
     "",
     "^types$",
+    "^@/lib/(.*)$",
+    "^@/styles/(.*)$",
     "^@/app/(.*)$",
     "",
     "^[./]",
