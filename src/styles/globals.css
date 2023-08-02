@@ -7,6 +7,12 @@
     --background: 0 0% 98%;
     --foreground: 0 0% 2%;
 
+    --primary: 225 80% 17%;
+    --primary-foreground: 224 32% 91%;
+
+    --accent: 43 96% 56%;
+    --accent-foreground: 48 56% 93%;
+
     --success: 142 71% 45%;
     --success-foreground: 84 81% 92%;
 
