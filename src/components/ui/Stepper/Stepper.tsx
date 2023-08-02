@@ -13,8 +13,8 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
 const Stepper = forwardRef<
   HTMLDivElement,
   StepperProps
->(({ className, isLastStep, isFirstStep, activeStep, ...props }, ref) => {
-  const { children, connector } = props
+>(({ className, isLastStep, isFirstStep, activeStep, connector, ...props }, ref) => {
+  const { children } = props
 
   const childrenArray = React.Children.toArray(children).filter(Boolean)
   const steps = childrenArray.map((step, index) => {
@@ -44,6 +44,7 @@ const Stepper = forwardRef<
     const connectorClassName = hasClassName ? connectorProps.className : ""
     return cloneElement(connector, {
       className: cn(connectorClassNameDefault, connectorClassName),
+      completedClassName: undefined,
     })
   }, [connector])
 
