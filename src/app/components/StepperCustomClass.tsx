@@ -1,7 +1,7 @@
 'use client'
 import { Icons } from '@/components/Icons'
 import { Button } from '@/components/ui/Button'
-import { Step, StepContent, Stepper } from '@/components/ui/Stepper'
+import { Step, StepConnector, StepContent, Stepper } from '@/components/ui/Stepper'
 import useStepper from '@/hooks/useStepper'
 
 export default function StepperCustomClass() {
@@ -13,6 +13,7 @@ export default function StepperCustomClass() {
         activeStep={activeStep}
         isLastStep={(value) => setIsLastStep(value)}
         isFirstStep={(value) => setIsFirstStep(value)}
+        connector={<StepConnector className='h-3 bg-red-500' completedClassName='h-3 bg-yellow-500' />}
       >
         <Step
           onClick={() => setActiveStep(1)}
