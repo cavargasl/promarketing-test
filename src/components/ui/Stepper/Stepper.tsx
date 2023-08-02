@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import React, { cloneElement, forwardRef, useContext, useEffect, useMemo, type ReactElement } from "react"
+import { StepConnector, connectorClassNameCompleteDefault, connectorClassNameDefault } from "./StepConnector"
 import StepperContext from "./StepperContext"
 
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -7,12 +8,13 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   activeStep: number
   isLastStep: (value: boolean) => void
   isFirstStep: (value: boolean) => void
+  connector?: ReactElement
 }
 const Stepper = forwardRef<
   HTMLDivElement,
   StepperProps
 >(({ className, isLastStep, isFirstStep, activeStep, ...props }, ref) => {
-  const { children } = props
+  const { children, connector } = props
 
   const childrenArray = React.Children.toArray(children).filter(Boolean)
   const steps = childrenArray.map((step, index) => {
@@ -31,6 +33,30 @@ const Stepper = forwardRef<
     [activeStep]
   )
 
+  const dynamicWidth = useMemo(() => {
+    return activeStep === 0 ? "w-0" : activeStep === steps.length - 1 ? "w-[calc(100%-4px)]" : `w-${String(activeStep + "/" + (steps.length - 1))}`
+  }, [activeStep, steps.length])
+
+  const memoizedConnectorDefault = useMemo(() => {
+    if (!connector) return <StepConnector />
+    const connectorProps = connector.props as { className?: string }
+    const hasClassName = "className" in connectorProps
+    const connectorClassName = hasClassName ? connectorProps.className : ""
+    return cloneElement(connector, {
+      className: cn(connectorClassNameDefault, connectorClassName),
+    })
+  }, [connector])
+
+  const memoizedConnectorComplete = useMemo(() => {
+    if (!connector) return <StepConnector className={cn(dynamicWidth)} completedClassName={connectorClassNameCompleteDefault} />
+    const connectorProps = connector.props as { completedClassName?: string }
+    const hasCompletedClassName = "completedClassName" in connectorProps
+    const connectorCompleteClassName = hasCompletedClassName ? connectorProps.completedClassName : ""
+    return cloneElement(connector, {
+      className: cn(connectorClassNameCompleteDefault, connectorCompleteClassName, dynamicWidth),
+    })
+  }, [connector, dynamicWidth])
+
   return (
     <StepperContext.Provider value={contextValue}>
       <div
@@ -38,6 +64,8 @@ const Stepper = forwardRef<
         className={cn("relative flex w-full items-center justify-between gap-1", className)}
         {...props}
       >
+        {memoizedConnectorDefault}
+        {memoizedConnectorComplete}
         {steps}
       </div>
     </StepperContext.Provider>
@@ -67,7 +95,8 @@ const Step = forwardRef<
 
   if (!StepIconComponent) return (
     <div
-      className={cn("relative h-4 w-4 cursor-pointer rounded-full bg-neutral", className,
+      className={cn("relative h-4 w-4 cursor-pointer rounded-full bg-neutral",
+        className,
         index === activeStep && `${activeClassName ? activeClassName : "border border-success bg-success-foreground text-success"}`,
         (index < activeStep) && `${completedClassName ? completedClassName : "bg-success text-background"}`)}
     >
@@ -119,7 +148,6 @@ const StepContent = forwardRef<
   )
 })
 StepContent.displayName = "StepContent"
-
 
 export { Step, StepContent, Stepper }
 
