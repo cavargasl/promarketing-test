@@ -37,7 +37,7 @@ const Stepper = forwardRef<
   const dynamicWidth = useMemo(() => {
     function getWidth() {
       if (activeStep === 0) return "0%"
-      if (activeStep === steps.length - 1) return "100%"
+      if (activeStep === steps.length - 1) return "calc(100% - 4px)"
       const width = `${((activeStep / (steps.length - 1)) * 100).toFixed(2)}%`
       return width
     }
